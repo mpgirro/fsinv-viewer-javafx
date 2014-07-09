@@ -7,7 +7,7 @@ import java.util.Date;
  *
  * @author Maximilian Irro
  */
-public class FileDefinition implements FsEntity{
+public class FileDefinition implements FileStructureEntity{
 	
 	private final String path;
 	private final long bytes;

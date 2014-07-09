@@ -7,7 +7,7 @@ import java.util.Date;
  *
  * @author Maximilian Irro
  */
-public class DirectoryDefinition implements FsEntity{
+public class DirectoryDefinition implements FileStructureEntity{
 	
     private final String path;
     private final long bytes;
@@ -15,9 +15,9 @@ public class DirectoryDefinition implements FsEntity{
     private final Date mtime;
     private final long fileCount;
     private final long itemCount;
-    private final FsEntity[] fileList;
+    private final FileStructureEntity[] fileList;
 
-    public DirectoryDefinition(String path, long bytes, Date ctime, Date mtime, long fileCount, long itemCount, FsEntity[] fileList){
+    public DirectoryDefinition(String path, long bytes, Date ctime, Date mtime, long fileCount, long itemCount, FileStructureEntity[] fileList){
         this.path = path;
         this.bytes = bytes;
         this.ctime = ctime;
