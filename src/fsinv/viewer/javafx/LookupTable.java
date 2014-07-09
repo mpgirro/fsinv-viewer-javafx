@@ -2,6 +2,8 @@
 package fsinv.viewer.javafx;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -13,7 +15,7 @@ public class LookupTable {
     private HashMap<Long,String> descriptionMap;
     
     public LookupTable(){
-    
+        
     }
     
     public String getDescription(long id){
@@ -24,8 +26,15 @@ public class LookupTable {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public void fromJSON() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void fromJSON(List jsonList) {
+        idCursor = 0;
+        for( Object item : jsonList){
+            long id = (Long) ((Map)item).get("id");
+            String descr = (String) ((Map)item).get("description");
+            descriptionMap.put(id,descr);
+            if (id > idCursor)
+                idCursor = id;
+        }
     }
 
     public void fromXML() {
