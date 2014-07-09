@@ -5,7 +5,7 @@ package fsinv.viewer.javafx;
  *
  * @author Maximilian Irro
  */
-public interface FsEntity {
+public interface FileStructureEntity {
     
     void fromDatabase();
     
