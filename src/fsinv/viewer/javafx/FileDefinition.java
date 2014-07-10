@@ -1,7 +1,13 @@
 
 package fsinv.viewer.javafx;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -9,40 +15,53 @@ import java.util.Date;
  */
 public class FileDefinition implements FileStructureEntity{
 	
-	private final String path;
-	private final long bytes;
-	private final Date ctime;
-	private final Date mtime;
-	private final int mimeId;
-	private final int kindId;
-	
-	public FileDefinition(String path, long bytes, Date ctime, Date mtime, int mimeId, int kindId){
-		this.path = path;
-		this.bytes = bytes;
-		this.ctime = ctime;
-		this.mtime = mtime;
-		this.mimeId = mimeId;
-		this.kindId = kindId;
-	}
+    private final String path;
+    private final long bytes;
+    private final Date ctime;
+    private final Date mtime;
+    private final long mimeId;
+    private final long kindId;
 
-    @Override
-    public void fromDatabase() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private FileDefinition(String path, long bytes, Date ctime, Date mtime, long mimeId, long kindId){
+        this.path = path;
+        this.bytes = bytes;
+        this.ctime = ctime;
+        this.mtime = mtime;
+        this.mimeId = mimeId;
+        this.kindId = kindId;
     }
 
-    @Override
-    public void fromJSON() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static FileDefinition fromDatabase() {
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
 
-    @Override
-    public void fromXML() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static FileDefinition fromJSON(Map jsonMap) {
+        String path = (String) jsonMap.get("path");
+        long bytes = (Long) jsonMap.get("bytes");
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
+        Date ctime = null;
+        try {
+            ctime = formatter.parse((String) jsonMap.get("ctime"));
+        } catch (ParseException ex) {
+            Logger.getLogger(FileDefinition.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Date mtime = null;
+        try {
+            mtime = formatter.parse((String) jsonMap.get("mtime"));
+        } catch (ParseException ex) {
+            Logger.getLogger(FileDefinition.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        long mimeId = (Long) jsonMap.get("mime_id");
+        long kindId = (Long) jsonMap.get("kind_id");
+        return new FileDefinition(path, bytes, ctime, mtime, mimeId, kindId);
     }
 
-    @Override
-    public void fromYAML() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static FileDefinition fromXML() {
+        throw new UnsupportedOperationException("Not supported yet."); 
+    }
+
+    public static FileDefinition fromYAML() {
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
     
 }

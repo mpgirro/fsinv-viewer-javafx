@@ -7,12 +7,4 @@ package fsinv.viewer.javafx;
  */
 public interface FileStructureEntity {
     
-    void fromDatabase();
-    
-    void fromJSON();
-    
-    void fromXML();
-    
-    void fromYAML();
-
 }

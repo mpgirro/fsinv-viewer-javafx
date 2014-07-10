@@ -15,6 +15,12 @@ public class FsInventory {
     private LookupTable kindTab;
     private LookupTable mimeTab;
     private DirectoryDefinition fileStructure;
+	
+    private FsInventory(LookupTable kindTab, LookupTable mimeTab, DirectoryDefinition fileStructure){
+        this.kindTab = kindTab;
+        this.mimeTab = mimeTab;
+        this.fileStructure = fileStructure;
+    }
     
     public void fromJSON(String inputJsonString){
         
@@ -24,14 +30,13 @@ public class FsInventory {
         Map fsinvData = parser.parseJson(inputJsonString);
 
         List kindTabJsonList = (List) fsinvData.get("kind_tab");
-        kindTab = new LookupTable();
-        kindTab.fromJSON(kindTabJsonList);
+        LookupTable kindTab = LookupTable.fromJSON(kindTabJsonList);
         
         List mimeTabJsonList = (List) fsinvData.get("mime_tab");
-        mimeTab = new LookupTable();
-        mimeTab.fromJSON(mimeTabJsonList);
+        LookupTable mimeTab = LookupTable.fromJSON(mimeTabJsonList);
         
         Map fstructTabMap = (Map) fsinvData.get("file_structure");
+        DirectoryDefinition fileStructure = DirectoryDefinition.fromJSON(fstructTabMap);
         
     }
     
