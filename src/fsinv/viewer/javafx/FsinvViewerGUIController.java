@@ -22,6 +22,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ToolBar;
+import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -95,6 +96,12 @@ public class FsinvViewerGUIController implements Initializable {
                 default:
                     System.out.println("File extension " + ext + " not valid");
             } 
+            
+            if( fsInv != null ){
+                TreeItem<String> fsRoot = new TreeItem<String>("Inventory");
+                builtFileSystemTree(fsRoot, fsInv.fileStructure);
+                filestructureTreeView.setRoot(fsRoot);
+            }
         } else {
             System.out.println("Choosen file is not a file (file==null)");
         }
@@ -111,5 +118,14 @@ public class FsinvViewerGUIController implements Initializable {
         // TODO
         statusLabel.setText("Ready");
     }    
+    
+    private void builtFileSystemTree(TreeItem parentItem, FileStructureEntity[] fsItems){
+        for( FileStructureEntity fse : fsItems ){
+            TreeItem<String> treeItem = new TreeItem<String>(fse.name());
+            parentItem.getChildren().add(treeItem);
+            if( fse instanceof DirectoryDefinition )
+                builtFileSystemTree(treeItem, ((DirectoryDefinition)fse).fileList );
+        }
+    }
     
 }

@@ -15,12 +15,12 @@ import java.util.logging.Logger;
  */
 public class FileDefinition implements FileStructureEntity{
 	
-    private final String path;
-    private final long bytes;
-    private final Date ctime;
-    private final Date mtime;
-    private final long mimeId;
-    private final long kindId;
+    public final String path;
+    public final long bytes;
+    public final Date ctime;
+    public final Date mtime;
+    public final long mimeId;
+    public final long kindId;
 
     private FileDefinition(String path, long bytes, Date ctime, Date mtime, long mimeId, long kindId){
         this.path = path;
@@ -62,6 +62,12 @@ public class FileDefinition implements FileStructureEntity{
 
     public static FileDefinition fromYAML() {
         throw new UnsupportedOperationException("Not supported yet."); 
+    }
+
+    @Override
+    public String name() {
+        String[] pathParts = path.split("/");
+        return pathParts[pathParts.length-1];
     }
     
 }

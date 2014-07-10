@@ -17,13 +17,13 @@ import java.util.logging.Logger;
  */
 public class DirectoryDefinition implements FileStructureEntity{
 	
-    private final String path;
-    private final long bytes;
-    private final Date ctime;
-    private final Date mtime;
-    private final long fileCount;
-    private final long itemCount;
-    private final FileStructureEntity[] fileList;
+    public final String path;
+    public final long bytes;
+    public final Date ctime;
+    public final Date mtime;
+    public final long fileCount;
+    public final long itemCount;
+    public final FileStructureEntity[] fileList;
 
     private DirectoryDefinition(String path, long bytes, Date ctime, Date mtime, long fileCount, long itemCount, FileStructureEntity[] fileList){
         this.path = path;
@@ -84,6 +84,12 @@ public class DirectoryDefinition implements FileStructureEntity{
             }
         }
         return (FileStructureEntity[]) fileList.toArray( new FileStructureEntity[0]);
+    }
+
+    @Override
+    public String name() {
+        String[] pathParts = path.split("/");
+        return pathParts[pathParts.length-1];
     }
 	
 }
