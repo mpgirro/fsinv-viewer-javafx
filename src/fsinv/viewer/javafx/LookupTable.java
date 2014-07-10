@@ -4,6 +4,7 @@ package fsinv.viewer.javafx;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.json.simple.JSONArray;
 
 /**
  *
@@ -27,7 +28,7 @@ public class LookupTable {
         throw new UnsupportedOperationException("Not supported yet."); 
     }
 
-    public static LookupTable fromJSON(List jsonList) {
+    public static LookupTable fromJSON(JSONArray jsonList) {
 	HashMap<Long,String> descriptionMap = new HashMap<>();
         long idCursor = 0;
         for( Object item : jsonList){

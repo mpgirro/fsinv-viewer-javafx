@@ -1,10 +1,13 @@
 
 package fsinv.viewer.javafx;
 
-import com.json.parsers.JSONParser;
-import com.json.parsers.JsonParserFactory;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  *
@@ -12,11 +15,11 @@ import java.util.Map;
  */
 public class FsInventory {
     
-    private LookupTable kindTab;
-    private LookupTable mimeTab;
-    private DirectoryDefinition fileStructure;
+    public final LookupTable kindTab;
+    public final LookupTable mimeTab;
+    public final DirectoryDefinition[] fileStructure;
 	
-    private FsInventory(LookupTable kindTab, LookupTable mimeTab, DirectoryDefinition fileStructure){
+    private FsInventory(LookupTable kindTab, LookupTable mimeTab, DirectoryDefinition[] fileStructure){
         this.kindTab = kindTab;
         this.mimeTab = mimeTab;
         this.fileStructure = fileStructure;
@@ -24,21 +27,33 @@ public class FsInventory {
     
     public static FsInventory fromJSON(String jsonInputString){
         
-        JsonParserFactory factory = JsonParserFactory.getInstance(); 
-        JSONParser parser = factory.newJsonParser();
-  
-        Map fsinvData = parser.parseJson(jsonInputString);
+        JSONParser parser=new JSONParser();
+        Map fsinvData;
+        try {
+            System.out.println("Parsinf JSON file");
+            fsinvData = (Map) parser.parse(jsonInputString);
+            
+            System.out.println("Building Kind Lookup Table");
+            JSONArray kindTabJsonList = (JSONArray) fsinvData.get("kind_tab");
+            LookupTable kindTab = LookupTable.fromJSON(kindTabJsonList);
 
-        List kindTabJsonList = (List) fsinvData.get("kind_tab");
-        LookupTable kindTab = LookupTable.fromJSON(kindTabJsonList);
-        
-        List mimeTabJsonList = (List) fsinvData.get("mime_tab");
-        LookupTable mimeTab = LookupTable.fromJSON(mimeTabJsonList);
-        
-        Map fstructTabMap = (Map) fsinvData.get("file_structure");
-        DirectoryDefinition fileStructure = DirectoryDefinition.fromJSON(fstructTabMap);
-        
-        return new FsInventory(kindTab, mimeTab, fileStructure);
+            System.out.println("Building MIME Lookup Table");
+            JSONArray mimeTabJsonList = (JSONArray) fsinvData.get("mime_tab");
+            LookupTable mimeTab = LookupTable.fromJSON(mimeTabJsonList);
+
+            System.out.println("Building File structure");
+            JSONArray fstructArray = (JSONArray) fsinvData.get("file_structure");
+            DirectoryDefinition[] fileStructure = new DirectoryDefinition[fstructArray.size()];
+            for( int i = 0; i < fstructArray.size(); i++ ){
+                fileStructure[i] = DirectoryDefinition.fromJSON((Map)fstructArray.get(i));
+            }
+
+            System.out.println("New FsInventory created");
+            return new FsInventory(kindTab, mimeTab, fileStructure);
+        } catch (ParseException ex) {
+            Logger.getLogger(FsInventory.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
     
 }

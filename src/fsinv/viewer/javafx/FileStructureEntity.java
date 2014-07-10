@@ -7,4 +7,6 @@ package fsinv.viewer.javafx;
  */
 public interface FileStructureEntity {
     
+    public String name();
+    
 }
