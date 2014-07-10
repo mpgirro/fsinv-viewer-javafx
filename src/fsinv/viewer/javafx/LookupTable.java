@@ -14,20 +14,22 @@ public class LookupTable {
     private long idCursor;
     private HashMap<Long,String> descriptionMap;
     
-    public LookupTable(){
-        
+    private LookupTable(long idCursor, HashMap<Long,String> descriptionMap){
+        this.idCursor = idCursor;
+        this.descriptionMap = descriptionMap;
     }
     
     public String getDescription(long id){
         return (String) descriptionMap.get(id);
     }
     
-    public void fromDatabase() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static LookupTable fromDatabase() {
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
 
-    public void fromJSON(List jsonList) {
-        idCursor = 0;
+    public static LookupTable fromJSON(List jsonList) {
+	HashMap<Long,String> descriptionMap = new HashMap<>();
+        long idCursor = 0;
         for( Object item : jsonList){
             long id = (Long) ((Map)item).get("id");
             String descr = (String) ((Map)item).get("description");
@@ -35,14 +37,15 @@ public class LookupTable {
             if (id > idCursor)
                 idCursor = id;
         }
+	return new LookupTable(idCursor,descriptionMap);
     }
 
-    public void fromXML() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static LookupTable fromXML() {
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
 
-    public void fromYAML() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static LookupTable fromYAML() {
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
     
 }
