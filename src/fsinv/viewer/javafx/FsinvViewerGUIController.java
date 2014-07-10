@@ -26,6 +26,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -34,6 +35,8 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.control.TreeView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -190,7 +193,14 @@ public class FsinvViewerGUIController implements Initializable {
     }
     
     private TreeItem<FileStructureEntity> createNode(final FileStructureEntity fse) {
-        final TreeItem<FileStructureEntity> node = new TreeItem<FileStructureEntity>(fse) {
+        
+        Node icon;
+        if(fse instanceof FileDefinition)
+            icon = new ImageView(new Image(getClass().getResourceAsStream("file_16.png")));
+        else
+            icon = new ImageView(new Image(getClass().getResourceAsStream("folder_16.png")));
+        
+        final TreeItem<FileStructureEntity> node = new TreeItem<FileStructureEntity>(fse,icon) {
             private boolean isLeaf;
             private boolean isFirstTimeChildren = true;
             private boolean isFirstTimeLeaf = true;
