@@ -8,13 +8,13 @@
 
 <AnchorPane id="AnchorPane" prefHeight="589.0" prefWidth="488.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="fsinv.viewer.javafx.FsinvViewerGUIController">
   <children>
-    <ToolBar id="toolBar" layoutX="0.0" layoutY="0.0" prefWidth="488.0">
+    <ToolBar id="toolBar" fx:id="toolBar" layoutX="0.0" layoutY="0.0" prefWidth="488.0">
       <items>
-        <Button id="loadButton" mnemonicParsing="false" text="Load Inventory" />
+        <Button id="loadButton" fx:id="loadButton" mnemonicParsing="false" text="Load Inventory" onAction="#loadButtonAction"/>
       </items>
     </ToolBar>
-    <TreeView id="filestructureTreeView" layoutX="0.0" layoutY="31.0" prefHeight="528.0" prefWidth="488.0" />
-    <ProgressBar id="progressBar" layoutX="274.0" layoutY="569.0" prefWidth="200.0" progress="0.0" />
-    <Label id="statusLabel" layoutX="14.0" layoutY="567.0" text="Label" />
+    <TreeView id="filestructureTreeView" fx:id="filestructureTreeView" layoutX="0.0" layoutY="31.0" prefHeight="528.0" prefWidth="488.0" />
+    <ProgressBar id="progressBar" fx:id="progressBar" layoutX="274.0" layoutY="569.0" prefWidth="200.0" progress="0.0" />
+    <Label id="statusLabel" fx:id="statusLabel" layoutX="14.0" layoutY="567.0" text="Label" />
   </children>
 </AnchorPane>
