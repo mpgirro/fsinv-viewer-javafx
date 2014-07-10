@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -83,13 +84,29 @@ public class DirectoryDefinition implements FileStructureEntity{
                     // chaos and madness
             }
         }
+        Collections.sort( fileList );
         return (FileStructureEntity[]) fileList.toArray( new FileStructureEntity[0]);
     }
 
     @Override
-    public String name() {
+    public String getName() {
         String[] pathParts = path.split("/");
         return pathParts[pathParts.length-1];
+    }
+
+    @Override
+    public long getSize() {
+        return bytes;
+    }
+
+    @Override
+    public Date getModificationTime() {
+        return mtime;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return this.getName().compareTo( ((FileStructureEntity)o).getName() );
     }
 	
 }

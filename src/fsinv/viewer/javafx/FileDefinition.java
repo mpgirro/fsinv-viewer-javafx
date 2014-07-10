@@ -65,9 +65,24 @@ public class FileDefinition implements FileStructureEntity{
     }
 
     @Override
-    public String name() {
+    public String getName() {
         String[] pathParts = path.split("/");
         return pathParts[pathParts.length-1];
+    }
+
+    @Override
+    public long getSize() {
+        return bytes;
+    }
+
+    @Override
+    public Date getModificationTime() {
+        return mtime;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return this.getName().compareTo( ((FileStructureEntity)o).getName() );
     }
     
 }
