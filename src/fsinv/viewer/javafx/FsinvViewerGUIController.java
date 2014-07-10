@@ -62,6 +62,8 @@ public class FsinvViewerGUIController implements Initializable {
     private static final long BYTES_IN_GB = (long) Math.pow(10,9);
     private static final long BYTES_IN_TB = (long) Math.pow(10,12);
     
+    private FsInvIconFactory iconFactory;
+    
     @FXML
     private void loadButtonAction(ActionEvent event) {
         System.out.println("Load Button clicked");
@@ -120,6 +122,9 @@ public class FsinvViewerGUIController implements Initializable {
             } 
             
             if( fsInv != null ){
+                
+                iconFactory = new FsInvIconFactory(fsInv.mimeTab);
+                
                 TreeItem<FileStructureEntity> fsRoot = new TreeItem<>();
                 List<TreeItem<FileStructureEntity>> rootChildList = new ArrayList<>();
                 for( FileStructureEntity child : fsInv.fileStructure )
@@ -144,6 +149,7 @@ public class FsinvViewerGUIController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         statusLabel.setText("Ready");
+
         pathTableColumn.setCellValueFactory(
                 new Callback<TreeTableColumn.CellDataFeatures<FileStructureEntity, String>, ObservableValue<String>>() {
             @Override
@@ -194,11 +200,7 @@ public class FsinvViewerGUIController implements Initializable {
     
     private TreeItem<FileStructureEntity> createNode(final FileStructureEntity fse) {
         
-        Node icon;
-        if(fse instanceof FileDefinition)
-            icon = new ImageView(new Image(getClass().getResourceAsStream("file_16.png")));
-        else
-            icon = new ImageView(new Image(getClass().getResourceAsStream("folder_16.png")));
+        Node icon = iconFactory.getIconbyMime(fse);
         
         final TreeItem<FileStructureEntity> node = new TreeItem<FileStructureEntity>(fse,icon) {
             private boolean isLeaf;
