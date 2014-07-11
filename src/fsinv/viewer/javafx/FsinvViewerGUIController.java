@@ -54,7 +54,7 @@ public class FsinvViewerGUIController implements Initializable {
     @FXML private TreeTableView filestructureTreeView;
     @FXML private TreeTableColumn pathTableColumn;
     @FXML private TreeTableColumn sizeTableColumn;
-    @FXML private TreeTableColumn mtimeTableColumn;
+    //@FXML private TreeTableColumn mtimeTableColumn;
     @FXML private ProgressBar progressBar;
     
     private static final long BYTES_IN_KB = (long) Math.pow(10,3);
@@ -173,7 +173,7 @@ public class FsinvViewerGUIController implements Initializable {
                 return new ReadOnlyObjectWrapper<String>(sizeString);
             }
         });
-        
+        /*
         mtimeTableColumn.setCellValueFactory(
                 new Callback<TreeTableColumn.CellDataFeatures<FileStructureEntity, String>, ObservableValue<String>>() {
             @Override
@@ -187,6 +187,7 @@ public class FsinvViewerGUIController implements Initializable {
                 return new ReadOnlyObjectWrapper<String>(dateString);
             }
         });
+        */
     }    
     
     private void builtFileSystemTree(TreeItem parentItem, FileStructureEntity[] fsItems){
