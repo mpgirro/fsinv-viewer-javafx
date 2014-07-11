@@ -7,22 +7,35 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="652.0" prefWidth="729.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fsinv.viewer.javafx.FsinvViewerGUIController">
+<AnchorPane id="AnchorPane" prefHeight="667.0" prefWidth="731.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fsinv.viewer.javafx.FsinvViewerGUIController">
   <children>
-    <ToolBar id="toolBar" fx:id="toolBar" layoutX="0.0" layoutY="0.0" prefHeight="38.0" prefWidth="729.0">
-      <items>
-        <Button id="loadButton" fx:id="loadButton" mnemonicParsing="false" onAction="#loadButtonAction" text="Open" />
-            <TextField id="searchTextField" fx:id="searchTextField" text="Search" />
-      </items>
-    </ToolBar>
-    <TreeTableView id="filestructureTreeView" fx:id="filestructureTreeView" layoutX="1.0" layoutY="38.0" prefHeight="572.0" prefWidth="729.0">
-         <columns>
-            <TreeTableColumn id="pathTableColumn" fx:id="pathTableColumn" prefWidth="555.0" text="Path" />
-            <TreeTableColumn id="sizeTableColumn" fx:id="sizeTableColumn" prefWidth="84.0" text="Size" />
-            <TreeTableColumn id="mtimeTableColumn" fx:id="mtimeTableColumn" prefWidth="88.0" text="Last mod" />
-         </columns>
-	</TreeTableView>
-    <ProgressBar id="progressBar" fx:id="progressBar" layoutX="516.0" layoutY="620.0" prefWidth="200.0" progress="0.0" />
-    <Label id="statusLabel" fx:id="statusLabel" layoutX="14.0" layoutY="622.0" text="Label" />
+      <AnchorPane AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+          <ToolBar id="toolBar" fx:id="toolBar" minHeight="38.0" prefHeight="38.0" prefWidth="729.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <items>
+              <Button id="loadButton" fx:id="loadButton" mnemonicParsing="false" onAction="#loadButtonAction" text="Open" />
+                  <HBox prefHeight="26.0" prefWidth="504.0" />
+                  <TextField id="searchTextField" fx:id="searchTextField" text="Search" />
+            </items>
+          </ToolBar>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="1.0" layoutY="38.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="38.0">
+         <children>
+          <TreeTableView id="filestructureTreeView" fx:id="filestructureTreeView" minHeight="550" minWidth="650" prefHeight="550.0" prefWidth="729.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <columns>
+                  <TreeTableColumn id="pathTableColumn" fx:id="pathTableColumn" minWidth="550" text="Path" />
+                  <TreeTableColumn id="sizeTableColumn" fx:id="sizeTableColumn" minWidth="100" text="Size" />
+                  <!--<TreeTableColumn id="mtimeTableColumn" fx:id="mtimeTableColumn" prefWidth="88.0" text="Last mod" />-->
+               </columns>
+      	</TreeTableView>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="14.0" layoutY="620.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+          <Label id="statusLabel" fx:id="statusLabel" layoutY="2.0" text="Label" />
+          <ProgressBar id="progressBar" fx:id="progressBar" layoutX="502.0" prefWidth="200.0" progress="0.0" AnchorPane.rightAnchor="0.0" />
+         </children>
+      </AnchorPane>
   </children>
 </AnchorPane>
