@@ -7,7 +7,7 @@ import java.util.Date;
  *
  * @author Maximilian Irro
  */
-public interface FileStructureEntity extends Comparable{
+public interface BaseDescription extends Comparable{
     
     public String getName();
     

@@ -13,7 +13,7 @@ import java.util.logging.Logger;
  *
  * @author Maximilian Irro
  */
-public class FileDefinition implements FileStructureEntity{
+public class FileDescription implements BaseDescription{
 	
     public final String path;
     public final long bytes;
@@ -22,7 +22,7 @@ public class FileDefinition implements FileStructureEntity{
     public final long mimeId;
     public final long kindId;
 
-    private FileDefinition(String path, long bytes, Date ctime, Date mtime, long mimeId, long kindId){
+    private FileDescription(String path, long bytes, Date ctime, Date mtime, long mimeId, long kindId){
         this.path = path;
         this.bytes = bytes;
         this.ctime = ctime;
@@ -31,11 +31,11 @@ public class FileDefinition implements FileStructureEntity{
         this.kindId = kindId;
     }
 
-    public static FileDefinition fromDatabase() {
+    public static FileDescription fromDatabase() {
         throw new UnsupportedOperationException("Not supported yet."); 
     }
 
-    public static FileDefinition fromJSON(Map jsonMap) {
+    public static FileDescription fromJSON(Map jsonMap) {
         String path = (String) jsonMap.get("path");
         long bytes = (Long) jsonMap.get("bytes");
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
@@ -43,24 +43,24 @@ public class FileDefinition implements FileStructureEntity{
         try {
             ctime = formatter.parse((String) jsonMap.get("ctime"));
         } catch (ParseException ex) {
-            Logger.getLogger(FileDefinition.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FileDescription.class.getName()).log(Level.SEVERE, null, ex);
         }
         Date mtime = null;
         try {
             mtime = formatter.parse((String) jsonMap.get("mtime"));
         } catch (ParseException ex) {
-            Logger.getLogger(FileDefinition.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FileDescription.class.getName()).log(Level.SEVERE, null, ex);
         }
         long mimeId = (Long) jsonMap.get("mime_id");
         long kindId = (Long) jsonMap.get("kind_id");
-        return new FileDefinition(path, bytes, ctime, mtime, mimeId, kindId);
+        return new FileDescription(path, bytes, ctime, mtime, mimeId, kindId);
     }
 
-    public static FileDefinition fromXML() {
+    public static FileDescription fromXML() {
         throw new UnsupportedOperationException("Not supported yet."); 
     }
 
-    public static FileDefinition fromYAML() {
+    public static FileDescription fromYAML() {
         throw new UnsupportedOperationException("Not supported yet."); 
     }
 
@@ -82,7 +82,7 @@ public class FileDefinition implements FileStructureEntity{
 
     @Override
     public int compareTo(Object o) {
-        return this.getName().compareTo( ((FileStructureEntity)o).getName() );
+        return this.getName().compareTo( ((BaseDescription)o).getName() );
     }
     
 }
