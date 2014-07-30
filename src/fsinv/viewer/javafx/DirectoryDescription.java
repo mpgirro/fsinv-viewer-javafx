@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  *
  * @author Maximilian Irro
  */
-public class DirectoryDefinition implements FileStructureEntity{
+public class DirectoryDescription implements BaseDescription{
 	
     public final String path;
     public final long bytes;
@@ -24,9 +24,9 @@ public class DirectoryDefinition implements FileStructureEntity{
     public final Date mtime;
     public final long fileCount;
     public final long itemCount;
-    public final FileStructureEntity[] fileList;
+    public final BaseDescription[] fileList;
 
-    private DirectoryDefinition(String path, long bytes, Date ctime, Date mtime, long fileCount, long itemCount, FileStructureEntity[] fileList){
+    private DirectoryDescription(String path, long bytes, Date ctime, Date mtime, long fileCount, long itemCount, BaseDescription[] fileList){
         this.path = path;
         this.bytes = bytes;
         this.ctime = ctime;
@@ -36,11 +36,11 @@ public class DirectoryDefinition implements FileStructureEntity{
         this.fileList = fileList;
     }
 
-    public static DirectoryDefinition fromDatabase() {
+    public static DirectoryDescription fromDatabase() {
         throw new UnsupportedOperationException("Not supported yet."); 
     }
 
-    public static DirectoryDefinition fromJSON(Map jsonMap) {
+    public static DirectoryDescription fromJSON(Map jsonMap) {
         String path = (String) jsonMap.get("path");
         long bytes = (Long) jsonMap.get("bytes");
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
@@ -48,44 +48,44 @@ public class DirectoryDefinition implements FileStructureEntity{
         try {
             ctime = formatter.parse((String) jsonMap.get("ctime"));
         } catch (ParseException ex) {
-            Logger.getLogger(DirectoryDefinition.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DirectoryDescription.class.getName()).log(Level.SEVERE, null, ex);
         }
         Date mtime = null;
         try {
             mtime = formatter.parse((String) jsonMap.get("mtime"));
         } catch (ParseException ex) {
-            Logger.getLogger(DirectoryDefinition.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DirectoryDescription.class.getName()).log(Level.SEVERE, null, ex);
         }
         long fileCount = (Long) jsonMap.get("file_count");
         long itemCount = (Long) jsonMap.get("item_count");
-        FileStructureEntity[] fileList = parseJSONFileList((List) jsonMap.get("file_list"));
-        return new DirectoryDefinition(path, bytes, ctime, mtime, fileCount, itemCount, fileList);
+        BaseDescription[] fileList = parseJSONFileList((List) jsonMap.get("file_list"));
+        return new DirectoryDescription(path, bytes, ctime, mtime, fileCount, itemCount, fileList);
     }
 
-    public static DirectoryDefinition fromXML() {
+    public static DirectoryDescription fromXML() {
         throw new UnsupportedOperationException("Not supported yet."); 
     }
 
-    public static DirectoryDefinition fromYAML() {
+    public static DirectoryDescription fromYAML() {
         throw new UnsupportedOperationException("Not supported yet."); 
     }
     
-    private static FileStructureEntity[] parseJSONFileList(List jsonList){
-        List<FileStructureEntity> fileList = new ArrayList<>();
+    private static BaseDescription[] parseJSONFileList(List jsonList){
+        List<BaseDescription> fileList = new ArrayList<>();
         for( Object item : jsonList){
             switch((String) ((Map)item).get("type")){
                 case "directory":
-                    fileList.add(DirectoryDefinition.fromJSON((Map)item));
+                    fileList.add(DirectoryDescription.fromJSON((Map)item));
                     break;
                 case "file":
-                    fileList.add(FileDefinition.fromJSON((Map)item));
+                    fileList.add(FileDescription.fromJSON((Map)item));
                     break;
                 default:
                     // chaos and madness
             }
         }
         Collections.sort( fileList );
-        return (FileStructureEntity[]) fileList.toArray( new FileStructureEntity[0]);
+        return (BaseDescription[]) fileList.toArray( new BaseDescription[0]);
     }
 
     @Override
@@ -106,7 +106,7 @@ public class DirectoryDefinition implements FileStructureEntity{
 
     @Override
     public int compareTo(Object o) {
-        return this.getName().compareTo( ((FileStructureEntity)o).getName() );
+        return this.getName().compareTo( ((BaseDescription)o).getName() );
     }
 	
 }

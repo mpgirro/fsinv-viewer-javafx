@@ -13,19 +13,19 @@ import org.json.simple.parser.ParseException;
  *
  * @author Maximilian Irro
  */
-public class FsInventory {
+public class Inventory {
     
     public final LookupTable kindTab;
     public final LookupTable mimeTab;
-    public final DirectoryDefinition[] fileStructure;
+    public final DirectoryDescription[] fileStructure;
 	
-    private FsInventory(LookupTable kindTab, LookupTable mimeTab, DirectoryDefinition[] fileStructure){
+    private Inventory(LookupTable kindTab, LookupTable mimeTab, DirectoryDescription[] fileStructure){
         this.kindTab = kindTab;
         this.mimeTab = mimeTab;
         this.fileStructure = fileStructure;
     }
     
-    public static FsInventory fromJSON(String jsonInputString){
+    public static Inventory fromJSON(String jsonInputString){
         
         JSONParser parser=new JSONParser();
         Map fsinvData;
@@ -43,15 +43,15 @@ public class FsInventory {
 
             System.out.println("Building File structure");
             JSONArray fstructArray = (JSONArray) fsinvData.get("file_structure");
-            DirectoryDefinition[] fileStructure = new DirectoryDefinition[fstructArray.size()];
+            DirectoryDescription[] fileStructure = new DirectoryDescription[fstructArray.size()];
             for( int i = 0; i < fstructArray.size(); i++ ){
-                fileStructure[i] = DirectoryDefinition.fromJSON((Map)fstructArray.get(i));
+                fileStructure[i] = DirectoryDescription.fromJSON((Map)fstructArray.get(i));
             }
 
             System.out.println("New FsInventory created");
-            return new FsInventory(kindTab, mimeTab, fileStructure);
+            return new Inventory(kindTab, mimeTab, fileStructure);
         } catch (ParseException ex) {
-            Logger.getLogger(FsInventory.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Inventory.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }

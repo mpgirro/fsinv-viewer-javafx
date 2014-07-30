@@ -14,20 +14,20 @@ import javafx.scene.image.ImageView;
  *
  * @author Maximilian Irro
  */
-class FsInvIconFactory {
+class FsinvIconFactory {
     
     private final LookupTable mimeTab;
     
-    public FsInvIconFactory(LookupTable mimeTab){
+    public FsinvIconFactory(LookupTable mimeTab){
         this.mimeTab = mimeTab;
     }
 
-    public Node getIconbyMime(FileStructureEntity fse) {
-        if(fse instanceof DirectoryDefinition)
+    public Node getIconbyMime(BaseDescription fse) {
+        if(fse instanceof DirectoryDescription)
             return new ImageView(new Image(getClass().getResourceAsStream("icons/folder_16.png")));
         else{
             
-            long mimeId = ((FileDefinition) fse).mimeId;
+            long mimeId = ((FileDescription) fse).mimeId;
             String mimeType = mimeTab.getDescription(mimeId);
 
             switch( mimeType ){

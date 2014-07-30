@@ -62,7 +62,7 @@ public class FsinvViewerGUIController implements Initializable {
     private static final long BYTES_IN_GB = (long) Math.pow(10,9);
     private static final long BYTES_IN_TB = (long) Math.pow(10,12);
     
-    private FsInvIconFactory iconFactory;
+    private FsinvIconFactory iconFactory;
     
     @FXML
     private void loadButtonAction(ActionEvent event) {
@@ -92,7 +92,7 @@ public class FsinvViewerGUIController implements Initializable {
             if (i > p) 
                 ext = filePath.substring(i+1);
             
-            FsInventory fsInv = null;
+            Inventory inventory = null;
             switch(ext.toLowerCase()){
             
                 case "json":
@@ -104,7 +104,7 @@ public class FsinvViewerGUIController implements Initializable {
                     } catch (FileNotFoundException ex){
                         Logger.getLogger(FsinvViewerGUIController.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    fsInv = FsInventory.fromJSON(jsonFileString);
+                    inventory = Inventory.fromJSON(jsonFileString);
                     break;
                 case "yml":
                 case "yaml":
@@ -121,13 +121,13 @@ public class FsinvViewerGUIController implements Initializable {
                     System.out.println("File extension " + ext + " not valid");
             } 
             
-            if( fsInv != null ){
+            if( inventory != null ){
                 
-                iconFactory = new FsInvIconFactory(fsInv.mimeTab);
+                iconFactory = new FsinvIconFactory(inventory.mimeTab);
                 
-                TreeItem<FileStructureEntity> fsRoot = new TreeItem<>();
-                List<TreeItem<FileStructureEntity>> rootChildList = new ArrayList<>();
-                for( FileStructureEntity child : fsInv.fileStructure )
+                TreeItem<BaseDescription> fsRoot = new TreeItem<>();
+                List<TreeItem<BaseDescription>> rootChildList = new ArrayList<>();
+                for( BaseDescription child : inventory.fileStructure )
                     rootChildList.add(createNode(child));
                 fsRoot.getChildren().setAll(rootChildList);
                 //builtFileSystemTree(fsRoot, fsInv.fileStructure);
@@ -151,10 +151,10 @@ public class FsinvViewerGUIController implements Initializable {
         statusLabel.setText("Ready");
 
         pathTableColumn.setCellValueFactory(
-                new Callback<TreeTableColumn.CellDataFeatures<FileStructureEntity, String>, ObservableValue<String>>() {
+                new Callback<TreeTableColumn.CellDataFeatures<BaseDescription, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<FileStructureEntity, String> param) {
-                FileStructureEntity fse = param.getValue().getValue();
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<BaseDescription, String> param) {
+                BaseDescription fse = param.getValue().getValue();
                 if(fse == null || param == null)
                     return new ReadOnlyObjectWrapper<String>("error");
                 String name = fse.getName();
@@ -163,10 +163,10 @@ public class FsinvViewerGUIController implements Initializable {
         });
         
         sizeTableColumn.setCellValueFactory(
-                new Callback<TreeTableColumn.CellDataFeatures<FileStructureEntity, String>, ObservableValue<String>>() {
+                new Callback<TreeTableColumn.CellDataFeatures<BaseDescription, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<FileStructureEntity, String> param) {
-                FileStructureEntity fse = param.getValue().getValue();
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<BaseDescription, String> param) {
+                BaseDescription fse = param.getValue().getValue();
                 if(fse == null || param == null)
                     return new ReadOnlyObjectWrapper<String>("error");
                 String sizeString = prettyBytesString(fse.getSize());
@@ -190,25 +190,25 @@ public class FsinvViewerGUIController implements Initializable {
         */
     }    
     
-    private void builtFileSystemTree(TreeItem parentItem, FileStructureEntity[] fsItems){
-        for( FileStructureEntity fse : fsItems ){
-            TreeItem<FileStructureEntity> treeItem = new TreeItem<FileStructureEntity>(fse);
+    private void builtFileSystemTree(TreeItem parentItem, BaseDescription[] fsItems){
+        for( BaseDescription fse : fsItems ){
+            TreeItem<BaseDescription> treeItem = new TreeItem<BaseDescription>(fse);
             parentItem.getChildren().add(treeItem);
-            if( fse instanceof DirectoryDefinition )
-                builtFileSystemTree(treeItem, ((DirectoryDefinition)fse).fileList );
+            if( fse instanceof DirectoryDescription )
+                builtFileSystemTree(treeItem, ((DirectoryDescription)fse).fileList );
         }
     }
     
-    private TreeItem<FileStructureEntity> createNode(final FileStructureEntity fse) {
+    private TreeItem<BaseDescription> createNode(final BaseDescription fse) {
         
         Node icon = iconFactory.getIconbyMime(fse);
         
-        final TreeItem<FileStructureEntity> node = new TreeItem<FileStructureEntity>(fse,icon) {
+        final TreeItem<BaseDescription> node = new TreeItem<BaseDescription>(fse,icon) {
             private boolean isLeaf;
             private boolean isFirstTimeChildren = true;
             private boolean isFirstTimeLeaf = true;
      
-            @Override public ObservableList<TreeItem<FileStructureEntity>> getChildren() {
+            @Override public ObservableList<TreeItem<BaseDescription>> getChildren() {
                 if (isFirstTimeChildren) {
                     isFirstTimeChildren = false;
                     super.getChildren().setAll(buildChildren(this));
@@ -219,7 +219,7 @@ public class FsinvViewerGUIController implements Initializable {
             @Override public boolean isLeaf() {
                 if (isFirstTimeLeaf) {
                     isFirstTimeLeaf = false;
-                    if( getValue() instanceof FileDefinition )
+                    if( getValue() instanceof FileDescription )
                         isLeaf = true;
                     else
                         isLeaf = false;
@@ -230,16 +230,16 @@ public class FsinvViewerGUIController implements Initializable {
         return node;
     }
     
-    private ObservableList<TreeItem<FileStructureEntity>> buildChildren(TreeItem<FileStructureEntity> TreeItem) {
-        FileStructureEntity fse = (FileStructureEntity) TreeItem.getValue();
-        if (fse != null && fse instanceof DirectoryDefinition) {
-            FileStructureEntity[] fileList = ((DirectoryDefinition)fse).fileList;
+    private ObservableList<TreeItem<BaseDescription>> buildChildren(TreeItem<BaseDescription> TreeItem) {
+        BaseDescription fse = (BaseDescription) TreeItem.getValue();
+        if (fse != null && fse instanceof DirectoryDescription) {
+            BaseDescription[] fileList = ((DirectoryDescription)fse).fileList;
             if (fileList != null) {
-                ObservableList<TreeItem<FileStructureEntity>> children = FXCollections.observableArrayList();
+                ObservableList<TreeItem<BaseDescription>> children = FXCollections.observableArrayList();
      
                 //for (FileStructureEntity child : fileList) {
                 for(int i = 0; i < fileList.length; i++){
-                    FileStructureEntity child = fileList[i];
+                    BaseDescription child = fileList[i];
                     children.add(createNode(child));
                 }
      
