@@ -13,15 +13,15 @@ import org.json.simple.JSONArray;
 public class LookupTable {
     
     private long idCursor;
-    private HashMap<Long,String> descriptionMap;
+    private HashMap<Long,String> valueMap;
     
     private LookupTable(long idCursor, HashMap<Long,String> descriptionMap){
         this.idCursor = idCursor;
-        this.descriptionMap = descriptionMap;
+        this.valueMap = descriptionMap;
     }
     
-    public String getDescription(long id){
-        return (String) descriptionMap.get(id);
+    public String getValue(long id){
+        return (String) valueMap.get(id);
     }
     
     public static LookupTable fromDatabase() {
@@ -29,16 +29,16 @@ public class LookupTable {
     }
 
     public static LookupTable fromJSON(JSONArray jsonList) {
-	HashMap<Long,String> descriptionMap = new HashMap<>();
+	HashMap<Long,String> valueMap = new HashMap<>();
         long idCursor = 0;
         for( Object item : jsonList){
             long id = (Long) ((Map)item).get("id");
-            String descr = (String) ((Map)item).get("description");
-            descriptionMap.put(id,descr);
+            String descr = (String) ((Map)item).get("value");
+            valueMap.put(id,descr);
             if (id > idCursor)
                 idCursor = id;
         }
-	return new LookupTable(idCursor,descriptionMap);
+	return new LookupTable(idCursor,valueMap);
     }
 
     public static LookupTable fromXML() {

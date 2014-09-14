@@ -20,15 +20,15 @@ public class FileDescription implements BaseDescription{
     public final Date ctime;
     public final Date mtime;
     public final long mimeId;
-    public final long kindId;
+    public final long magicId;
 
-    private FileDescription(String path, long bytes, Date ctime, Date mtime, long mimeId, long kindId){
+    private FileDescription(String path, long bytes, Date ctime, Date mtime, long mimeId, long magicId){
         this.path = path;
         this.bytes = bytes;
         this.ctime = ctime;
         this.mtime = mtime;
         this.mimeId = mimeId;
-        this.kindId = kindId;
+        this.magicId = magicId;
     }
 
     public static FileDescription fromDatabase() {
@@ -51,9 +51,9 @@ public class FileDescription implements BaseDescription{
         } catch (ParseException ex) {
             Logger.getLogger(FileDescription.class.getName()).log(Level.SEVERE, null, ex);
         }
-        long mimeId = (Long) jsonMap.get("mime_id");
-        long kindId = (Long) jsonMap.get("kind_id");
-        return new FileDescription(path, bytes, ctime, mtime, mimeId, kindId);
+        long mimeId = (Long) jsonMap.get("mimetype");
+        long magicId = (Long) jsonMap.get("magicdescr");
+        return new FileDescription(path, bytes, ctime, mtime, mimeId, magicId);
     }
 
     public static FileDescription fromXML() {

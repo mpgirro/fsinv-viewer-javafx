@@ -66,7 +66,7 @@ public class FsinvViewerGUIController implements Initializable {
     
     @FXML
     private void loadButtonAction(ActionEvent event) {
-        System.out.println("Load Button clicked");
+        System.out.println("Load button clicked");
         statusLabel.setText("Choose an inventory file");
         
         Stage stage = (Stage) loadButton.getScene().getWindow();
@@ -75,16 +75,16 @@ public class FsinvViewerGUIController implements Initializable {
         fileChooser.setTitle("Open inventory File");
         
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json"));
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("YAML files (*.yal|*.yml)", "*.yaml", "*.yml"));
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml"));
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SQLite3 DB files (*.db|*.sqlite3)", "*.db", "*.sqlite3"));
+        //fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("YAML files (*.yal|*.yml)", "*.yaml", "*.yml"));
+        //fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml"));
+        //fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SQLite3 DB files (*.db|*.sqlite3)", "*.db", "*.sqlite3"));
         
         File file = fileChooser.showOpenDialog(stage);
         if (file != null){
             String filePath = file.getAbsolutePath();
             
-            statusLabel.setText("Loading " + filePath);
-            System.out.println("Loading " + filePath);
+            statusLabel.setText("loading " + filePath);
+            System.out.println("loading " + filePath);
 
             String ext = "";
             int i = filePath.lastIndexOf('.');
