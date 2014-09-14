@@ -28,7 +28,7 @@ class FsinvIconFactory {
         else{
             
             long mimeId = ((FileDescription) fse).mimeId;
-            String mimeType = mimeTab.getDescription(mimeId);
+            String mimeType = mimeTab.getValue(mimeId);
 
             switch( mimeType ){
                 case "text/plain":
